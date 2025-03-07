@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Ordering System</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: url('programmable-slow-cooker-with-temperature-settings_1253148-680.jpg') no-repeat center center;
+            background-size: cover;
+            backdrop-filter: blur(8px);
+            height: 100vh;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+            width: 350px;
+            position: relative;
+            z-index: 1;
+        }
+        h1 {
+            font-size: 2.5rem;
+            color: #ff6347;
+            margin-bottom: 20px;
+        }
+        p {
+            font-size: 1.2rem;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        button {
+            padding: 12px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        button.primary {
+            background-color: #ff6347;
+            color: white;
+        }
+        button.primary:hover {
+            background-color: #e55337;
+        }
+        button.secondary {
+            background-color: transparent;
+            border: 2px solid #ff6347;
+            color: #ff6347;
+        }
+        button.secondary:hover {
+            background-color: #ff6347;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Welcome to Foodie</h1>
+        <p>Order delicious food from your favorite restaurants!</p>
+        <div class="buttons">
+            <button class="primary" onclick="window.location.href='login.html'">Login</button>
+            <button class="secondary" onclick="window.location.href='signup.html'">Sign Up</button>
+        </div>
+    </div>
+</body>
+</html>

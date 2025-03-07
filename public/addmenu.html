@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff9c4;
+        }
+        .navbar {
+            background-color: #d32f2f;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 24px;
+        }
+        .navbar a:hover {
+            background-color: #b71c1c;
+        }
+        .container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .container input {
+            padding: 10px;
+            margin: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+        .container button {
+            padding: 10px 20px;
+            font-size: 18px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .container button:hover {
+            background-color: #b71c1c;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="dashboard-admin.html">Back</a>
+        <div>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Add Dish</h1>
+        <input type="text" id="dishName" placeholder="Dish Name">
+        <input type="number" id="dishPrice" placeholder="Price">
+        <input type="text" id="dishCategory" placeholder="Category">
+        <button onclick="addDish()">Add Dish</button>
+    </div>
+    <script>
+        async function addDish() {
+            const name = document.getElementById('dishName').value;
+            const price = document.getElementById('dishPrice').value;
+            const category = document.getElementById('dishCategory').value;
+
+            const response = await fetch('/admin/menu', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify({ name, price, category, restaurantId: 1 }), // Replace 1 with actual restaurant ID
+            });
+
+            const data = await response.json();
+            alert(data.message);
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>

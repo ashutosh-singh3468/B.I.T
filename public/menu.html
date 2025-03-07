@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff9c4;
+        }
+        .navbar {
+            background-color: #d32f2f;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 24px;
+        }
+        .navbar a:hover {
+            background-color: #b71c1c;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .dish-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 10px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+        .dish-card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .dish-card h2 {
+            font-size: 24px;
+            color: #d32f2f;
+        }
+        .dish-card p {
+            font-size: 16px;
+            color: #555;
+        }
+        .dish-card button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .dish-card button:hover {
+            background-color: #b71c1c;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="dashboard-user.html">Back</a>
+        <div>
+            <a href="cart.html">Cart</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Menu</h1>
+        <div id="menu"></div>
+    </div>
+    <script>
+        const restroId = new URLSearchParams(window.location.search).get('restroId');
+
+        async function loadMenu() {
+            const response = await fetch(`/user/menu/${restroId}`, {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+            });
+            const data = await response.json();
+
+            const menuDiv = document.getElementById('menu');
+            data.menu.forEach(item => {
+                const card = document.createElement('div');
+                card.className = 'dish-card';
+                card.innerHTML = `
+                    <img src="/images/${item.image}" alt="${item.name}">
+                    <h2>${item.name}</h2>
+                    <p>Price: $${item.price}</p>
+                    <button onclick="addToCart(${item.id})">Add to Cart</button>
+                `;
+                menuDiv.appendChild(card);
+            });
+        }
+
+        function addToCart(dishId) {
+            // Add to cart logic here
+            alert(`Dish ${dishId} added to cart!`);
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+
+        // Load menu on page load
+        loadMenu();
+    </script>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kitchen Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff9c4;
+        }
+        .navbar {
+            background-color: #d32f2f;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 24px;
+        }
+        .navbar a:hover {
+            background-color: #b71c1c;
+        }
+        .container {
+            text-align: center;
+            margin-top: 20px;
+        }
+        .order-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 10px auto;
+            padding: 20px;
+            width: 80%;
+            text-align: left;
+        }
+        .order-card h2 {
+            font-size: 24px;
+            color: #d32f2f;
+        }
+        .order-card p {
+            font-size: 16px;
+            color: #555;
+        }
+        .order-card button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .order-card button:hover {
+            background-color: #b71c1c;
+        }
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#">Kitchen Dashboard</a>
+        <div>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Orders</h1>
+        <div id="orders"></div>
+    </div>
+    <script>
+        async function loadOrders() {
+            const response = await fetch('/kitchen/orders', {
+                headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+            });
+            const data = await response.json();
+
+            const ordersDiv = document.getElementById('orders');
+            data.orders.forEach(order => {
+                const card = document.createElement('div');
+                card.className = 'order-card';
+                card.innerHTML = `
+                    <h2>Order ID: ${order.id}</h2>
+                    <p>Status: ${order.status}</p>
+                    <button onclick="updateStatus(${order.id}, 'completed')">Mark as Completed</button>
+                `;
+                ordersDiv.appendChild(card);
+            });
+        }
+
+        async function updateStatus(orderId, status) {
+            const response = await fetch(`/kitchen/order/${orderId}`, {
+                method: 'PUT',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${localStorage.getItem('token')}`,
+                },
+                body: JSON.stringify({ status }),
+            });
+            const data = await response.json();
+            alert(data.message);
+            window.location.reload(); // Refresh the page
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+
+        // Load orders on page load
+        loadOrders();
+    </script>
+</body>
+</html>

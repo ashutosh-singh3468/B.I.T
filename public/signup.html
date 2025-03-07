@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up</title>
+    <style>
+        /* General Styles */
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff9c4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #d32f2f;
+            width: 100%;
+            padding: 15px 20px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 20px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar a:hover {
+            background-color: #b71c1c;
+            border-radius: 5px;
+        }
+
+        /* Signup Container Styles */
+        .container {
+            background-color: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+            margin-top: 80px; /* To account for the fixed navbar */
+        }
+
+        .container h1 {
+            color: #d32f2f;
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+        }
+
+        .container input,
+        .container select {
+            width: 100%;
+            padding: 12px;
+            margin: 10px 0;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 16px;
+            outline: none;
+            transition: border-color 0.3s ease;
+        }
+
+        .container input:focus,
+        .container select:focus {
+            border-color: #d32f2f;
+        }
+
+        .container button {
+            width: 100%;
+            padding: 12px;
+            margin-top: 20px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .container button:hover {
+            background-color: #b71c1c;
+        }
+
+        /* Access Key Field Styles */
+        #accessKeyField {
+            display: none;
+            margin-top: 10px;
+        }
+
+        /* Link Styles */
+        .container p {
+            margin-top: 20px;
+            font-size: 16px;
+            color: #555;
+        }
+
+        .container a {
+            color: #d32f2f;
+            text-decoration: none;
+            font-weight: bold;
+            transition: color 0.3s ease;
+        }
+
+        .container a:hover {
+            color: #b71c1c;
+        }
+
+        /* Animation for Container */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .container {
+            animation: fadeIn 0.5s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <div class="navbar">
+        <a href="#">Food App</a>
+        <div>
+            <a href="login.html">Login</a>
+        </div>
+    </div>
+
+    <!-- Signup Container -->
+    <div class="container">
+        <h1>Sign Up</h1>
+        <input type="text" id="name" placeholder="Name">
+        <input type="email" id="email" placeholder="Email">
+        <input type="password" id="password" placeholder="Password">
+        <select id="role">
+            <option value="user">User</option>
+            <option value="admin">Admin</option>
+            <option value="counter">Counter</option>
+            <option value="kitchen">Kitchen</option>
+        </select>
+        <div id="accessKeyField">
+            <input type="text" id="accessKey" placeholder="Access Key">
+        </div>
+        <button onclick="signup()">Sign Up</button>
+        <p>Already have an account? <a href="login.html">Login here</a></p>
+    </div>
+
+    <script>
+        // Show/hide access key field based on role
+        document.getElementById('role').addEventListener('change', function () {
+            const accessKeyField = document.getElementById('accessKeyField');
+            if (this.value === 'counter' || this.value === 'kitchen') {
+                accessKeyField.style.display = 'block';
+            } else {
+                accessKeyField.style.display = 'none';
+            }
+        });
+
+        // Signup function
+        async function signup() {
+            const name = document.getElementById('name').value;
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const role = document.getElementById('role').value;
+            const accessKey = document.getElementById('accessKey').value;
+
+            const response = await fetch('/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ name, email, password, role, accessKey }),
+            });
+
+            const data = await response.json();
+            if (data.message === 'User registered successfully!') {
+                alert('Signup successful! Please login.');
+                window.location.href = 'login.html';
+            } else {
+                alert(data.message);
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>User Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #fff9c4;
+        }
+        .navbar {
+            background-color: #d32f2f;
+            overflow: hidden;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+        }
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            font-size: 24px;
+        }
+        .navbar a:hover {
+            background-color: #b71c1c;
+        }
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        .restro-card {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            margin: 10px;
+            padding: 20px;
+            width: 300px;
+            text-align: center;
+        }
+        .restro-card img {
+            width: 100%;
+            border-radius: 8px;
+        }
+        .restro-card h2 {
+            font-size: 24px;
+            color: #d32f2f;
+        }
+        .restro-card p {
+            font-size: 16px;
+            color: #555;
+        }
+        .restro-card button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #d32f2f;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        .restro-card button:hover {
+            background-color: #b71c1c;
+        }
+        .restro-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+    </style>
+</head>
+<body>
+    <div class="navbar">
+        <a href="#">Food App</a>
+        <div>
+            <a href="cart.html">Cart</a>
+            <a href="#" onclick="logout()">Logout</a>
+        </div>
+    </div>
+    <div class="container">
+        <h1>Restaurants</h1>
+        <div id="restaurants"></div>
+    </div>
+    <script>
+        async function loadRestaurants() {
+    try {
+        const response = await fetch('/admin/restaurants', {
+            headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            },
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('Restaurants:', data.restaurants);
+
+        // Append restaurants to the DOM
+        const restaurantList = document.getElementById('restaurantList');
+        restaurantList.innerHTML = ''; // Clear existing content
+
+        data.restaurants.forEach(restaurant => {
+            const restaurantCard = document.createElement('div');
+            restaurantCard.className = 'restaurant-card';
+            restaurantCard.innerHTML = `
+                <img src="/images/${restaurant.image}" alt="${restaurant.name}" class="restro-image">
+                <h3>${restaurant.name}</h3>
+                <p>ID: ${restaurant.id}</p>
+            `;
+
+            // Redirect to addmenu.html with restaurantId when clicked
+            restaurantCard.addEventListener('click', () => {
+                window.location.href = `addmenu.html?restaurantId=${restaurant.id}`;
+            });
+
+            restaurantList.appendChild(restaurantCard);
+        });
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Failed to load restaurants. Please try again.');
+    }
+}
+
+        function viewMenu(restroId) {
+            window.location.href = `menu.html?restroId=${restroId}`;
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            window.location.href = 'login.html';
+        }
+
+        // Load restaurants on page load
+        loadRestaurants();
+    </script>
+</body>
+</html>

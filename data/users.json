@@ -1,0 +1,29 @@
+[
+  {
+    "id": 1741292147930,
+    "name": "",
+    "email": "kp6615856@gmail.com",
+    "password": "$2a$10$UH7AwWbp9CUvYKx2Ki.WF.PRmiaKvRD42iBbVmUr.rq6RFiBmywqO",
+    "role": "admin",
+    "accessKey": "",
+    "token": "02d6d97fad0eaae1c2a7f19a346d930d"
+  },
+  {
+    "id": 1741302085408,
+    "name": "",
+    "email": "kp665856@gmail.com",
+    "password": "$2a$10$h98N3KS331tSFJtHK7LZn.SCOyfnBPQMidffLBi2zDhQ.uyOLp0Fi",
+    "role": "user",
+    "accessKey": "",
+    "token": "287f9e67d9d0c12561e38deef4efb9fe"
+  },
+  {
+    "id": 1741322618726,
+    "name": "",
+    "email": "kp661856@gmail.com",
+    "password": "$2a$10$yRajAyKo/bI0WXHa0xJdpOO7Du37kbdCFf.xpUlmFI.3lOpMfYrIa",
+    "role": "counter",
+    "accessKey": "345",
+    "token": "f4f06fbdb787e26478a6c4be5efd582c"
+  }
+]
